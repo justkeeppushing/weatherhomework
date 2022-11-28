@@ -5,7 +5,7 @@ Suggest using virtual python environments via `mkvirtualenv`, `virtualenvwrapper
 ```
 mkvirtualenv weather
 workon weather
-pip3 install -f requirements.txt
+pip3 install -r requirements.txt
 flask run
 ```
 
