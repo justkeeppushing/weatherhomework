@@ -51,10 +51,14 @@ Only thing changed was initial Docker base image, to alpine-python 3.6.9 to matc
 I merged their example /info and healthcheck endpoints into my app.py.
 
 
-### Problems 
+### Missing/Todo
 Ideally, app.py would be split into two files, one with the healthchecks and one for the core application. and, the app.py source would be the same between /docker and /devel subdirectories, but I didn't want to spend too much time on it since this is only an example for the time being.
 
 
-### Todo
+Currently, there is no exception trapping, but it would be nice to have Flask throw a polite error if the incorrect amount of API parameters are given.
 
-Currently, there is no exception trapping, but it would be nice to have Flask throw a polite error if the incorrect amount of API parameters are given. 
+
+Nginx logging seems to be ommitting Flask /api GET data. 
+
+
+No front end form, decided to skip that in favor of containerizing.
