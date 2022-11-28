@@ -1,5 +1,8 @@
 # Tiny Flask Weather API
 
+This is a baby API that will suggest how to deal with the weather over one to five days. You supply it your location via lat,long, and it gives back a json response with information on the days requested.
+
+
 ## How to use (without docker):
 Suggest using virtual python environments via `mkvirtualenv`, `virtualenvwrapper` in your developer setup, so there is no pip conflict with the system. 
 ```
