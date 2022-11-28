@@ -1,5 +1,9 @@
 # Tiny Flask Weather API
 
+### How to use (with Docker):
+
+https://raw.githubusercontent.com/docker/awesome-compose/master/nginx-wsgi-flask/compose.yaml
+
 ### How to use (without docker):
 Suggest using virtual python environments via `mkvirtualenv`, `virtualenvwrapper` in your developer setup, so there is no pip conflict with the system. 
 ```
@@ -39,20 +43,3 @@ Broken down, you will want to specify the following:
 `start_date`: the date to monitor, using DD-MM-YYYY format.
 
 This information is passed to *api.open-meteo.com* whose documentation and other functions (such as the source weather codes) can be found: https://open-meteo.com/en/docs
-
-
-### How to use (with Docker):
-Built using reference from this repo:
-https://github.com/docker/awesome-compose/tree/master/nginx-wsgi-flask
-
-Only thing changed was initial Docker base image, to alpine-python 3.6.9 to match my development environment.
-
-`docker-compose up` from the /docker directory will start the nginx and flask processes, then be available at http://127.0.0.1:8000/ .
-I merged their example /info and healthcheck endpoints into my app.py.
-
-Ideally, this would be split into two files, and the app.py source would be the same between /docker and /devel subdirectories, but I didn't want to spend too much time on it since this is only an example for the time being.
-
-
-### Todo
-
-Currently, there is no exception trapping, but it would be nice to have Flask throw a polite error if the incorrect amount of API parameters are given. 
