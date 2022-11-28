@@ -12,7 +12,7 @@ flask run
 API will be available at 127.0.0.1:5000/api .
 You can set `FLASK_DEBUG` to 1 via `EXPORT FLASK_DEBUG=1` before launching `./app.py` for more verbose logging and stack tracing from Flask. By default, this is disabled.
 
-If port 5000 is not available, you may change it via `export FLASK_RUN_PORT=5001` or to the port of your choosing before launch.
+If port 5000 is not available, you may change it via `export FLASK_RUN_PORT=5001` or to the port of your choosing for development.
 
 When the application is running, Flask should display:
 ```
@@ -47,10 +47,12 @@ https://github.com/docker/awesome-compose/tree/master/nginx-wsgi-flask
 
 Only thing changed was initial Docker base image, to alpine-python 3.6.9 to match my development environment.
 
-`docker-compose up` from the /docker directory will start the nginx and flask processes, then be available at http://127.0.0.1:8000/ .
+`docker-compose up` from the /docker directory will start the nginx and flask processes, then be available at `http://127.0.0.1:8000/`  The API functionality is exactly the same as described above, just listens on a different port by default.
 I merged their example /info and healthcheck endpoints into my app.py.
 
-Ideally, this would be split into two files, and the app.py source would be the same between /docker and /devel subdirectories, but I didn't want to spend too much time on it since this is only an example for the time being.
+
+### Problems 
+Ideally, app.py would be split into two files, one with the healthchecks and one for the core application. and, the app.py source would be the same between /docker and /devel subdirectories, but I didn't want to spend too much time on it since this is only an example for the time being.
 
 
 ### Todo
