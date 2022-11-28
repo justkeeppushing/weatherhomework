@@ -1,6 +1,6 @@
 # Tiny Flask Weather API
 
-### How to use (without docker):
+## How to use (without docker):
 Suggest using virtual python environments via `mkvirtualenv`, `virtualenvwrapper` in your developer setup, so there is no pip conflict with the system. 
 ```
 mkvirtualenv weather
@@ -23,7 +23,8 @@ When the application is running, Flask should display:
  * Debug mode: off
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
- 
+
+### Call structure 
 A typical call can be passed through your browser, or via curl, and looks like:
 ```
 http://127.0.0.1:5000/api?num_days=5&orig_lat=47&orig_long=-122&start_date=22-11-2022
@@ -33,10 +34,13 @@ You can verify the call HTTP status from the `flask run` output.
 
 Broken down, you will want to specify the following:
 
-`num_days`: from 1 to 5 days.
-`orig_lat`: your latitude, in plain or decimal format.
-`orig_long`: your longitude, in plain or decimal format.
-`start_date`: the date to monitor, using DD-MM-YYYY format.
+`num_days`: *from 1 to 5 days.*
+
+`orig_lat`: *your latitude, in plain or decimal format.*
+
+`orig_long`: *your longitude, in plain or decimal format.*
+
+`start_date`: *the date to monitor, using DD-MM-YYYY format.*
 
 This information is passed to *api.open-meteo.com* whose documentation and other functions (such as the source weather codes) can be found: https://open-meteo.com/en/docs
 
@@ -55,7 +59,7 @@ I merged their example /info and healthcheck endpoints into my app.py.
 Ideally, app.py would be split into two files, one with the healthchecks and one for the core application. and, the app.py source would be the same between /docker and /devel subdirectories, but I didn't want to spend too much time on it since this is only an example for the time being.
 
 
-Currently, there is no exception trapping, but it would be nice to have Flask throw a polite error if the incorrect amount of API parameters are given.
+Currently, there is no exception trapping, but it would be nice to have Flask throw a polite error if the incorrect amount of API parameters are given. For the small project I feel Flask is pretty intuitive. In practice I would monitor for non-200 responses from the origin API and reprint whatever information it has to provide, for instance.
 
 
 Nginx logging seems to be ommitting Flask /api GET data. 
