@@ -6,10 +6,10 @@ from dateutil import parser
 import datetime
 import time
 import urllib
-from flask import Flask, request, jsonify, abort, render_template
+from flask import Flask, request, jsonify, abort
 import logging
 
-logging.basicConfig()
+#logging.basicConfig(##)
 app = Flask(__name__)
 
 # WMO Weather interpretation codes (WW)
@@ -47,9 +47,6 @@ weathercodes = {
 #populate an index.html
 #with a form that POSTs 
 
-@app.errorhandler(400)
-def bad_request(e):
-    return render_template('400.html'), 400
 
 @app.route('/api')
 def api():
