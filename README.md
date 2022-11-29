@@ -118,10 +118,15 @@ Ideally, app.py would be split into two files, one with the healthchecks and one
 
 
 Currently, there is no exception trapping, but it would be nice to have Flask throw a polite error if the incorrect amount of API parameters are given. For the small project I feel Flask is pretty intuitive. In practice I would monitor for non-200 responses from the origin API and reprint whatever information it has to provide, for instance.
-- https://flask.palletsprojects.com/en/2.1.x/errorhandling/ Found documentation with plenty of examples here. 
+
+- https://flask.palletsprojects.com/en/2.2.x/errorhandling/ Found documentation with plenty of examples here. 
+- https://werkzeug.palletsprojects.com/en/2.2.x/exceptions/#module-werkzeug.exceptions Another module for non-200 replies.
+
 
 Nginx logging seems to be ommitting Flask /api GET data. 
+
 - Need to manually write errors out to file to be consumed. 
+- https://flask.palletsprojects.com/en/2.2.x/logging/?highlight=logging
 
 
 No front end form, decided to skip that in favor of containerizing.
