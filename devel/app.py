@@ -9,7 +9,7 @@ import urllib
 from flask import Flask, request, jsonify, abort
 import logging
 
-logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s %(levelname)s in %(module)s: %(message)s', level=logging.DEBUG)
 app = Flask(__name__)
 
 # WMO Weather interpretation codes (WW)
