@@ -1,8 +1,8 @@
 # Tiny Flask Weather API
 
-This is a baby API that will suggest how to deal with the weather over one to five days. You supply it your location via lat,long, and it gives back a json response with information on the days requested.
+This is a baby API that will suggest how to deal with the weather over one to five days. You supply it your location via lat,long, and it gives back a json response with information on the days requested. Namely, whether or not you should bring a jacket.
 
-
+![Flasks](https://i.imgur.com/kST68th.jpg)
 ## How to use (without docker):
 Suggest using virtual python environments via `mkvirtualenv`, `virtualenvwrapper` in your developer setup, so there is no pip conflict with the system. 
 ```
@@ -48,7 +48,7 @@ Broken down, you will want to specify the following:
 This information is passed to *api.open-meteo.com* whose documentation and other functions (such as the source weather codes) can be found: https://open-meteo.com/en/docs
 
 
-### How to use (with Docker):
+### How to use (with Docker -- in the docker branch):
 Built using reference from this repo:
 https://github.com/docker/awesome-compose/tree/master/nginx-wsgi-flask
 
