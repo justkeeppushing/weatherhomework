@@ -57,6 +57,61 @@ Only thing changed was initial Docker base image, to alpine-python 3.6.9 to matc
 `docker-compose up` from the /docker directory will start the nginx and flask processes, then be available at `http://127.0.0.1:8000/`  The API functionality is exactly the same as described above, just listens on a different port by default.
 I merged their example /info and healthcheck endpoints into my app.py.
 
+### Expected output example
+
+```
+{"47.01166, -122.04704": [{"2022-11-28": {"max": 34.7, "min": 29.2, "weather": "Slight snow showers", "Annotation:": "Brr, it's cold."}}, {"2022-11-29": {"max": 36.3, "min": 21.9, "weather": "Slight snow showers", "Annotation:": "Brr, it's cold."}}, {"2022-11-30": {"max": 36.7, "min": 26.9, "weather": "Slight snow showers", "Annotation:": "Brr, it's cold."}}, {"2022-12-01": {"max": 31.4, "min": 19.3, "weather": "Moderate snowfall", "Annotation:": "Brr, it's cold."}}, {"2022-12-02": {"max": 33.9, "min": 17.7, "weather": "Slight snowfall", "Annotation:": "Brr, it's cold."}}]}
+```
+
+You can use `jq` to parse it from command line, which prettifies and provide syntax hilighting for json objects.
+
+```
+ 🌈⤳ curl -s "http://127.0.0.1:8000/api?num_days=5&orig_lat=47&orig_long=-122&start_date=28-11-2022" | jq
+{
+  "47.01166, -122.04704": [
+    {
+      "2022-11-28": {
+        "max": 34.7,
+        "min": 29.2,
+        "weather": "Slight snow showers",
+        "Annotation:": "Brr, it's cold."
+      }
+    },
+    {
+      "2022-11-29": {
+        "max": 36.3,
+        "min": 21.9,
+        "weather": "Slight snow showers",
+        "Annotation:": "Brr, it's cold."
+      }
+    },
+    {
+      "2022-11-30": {
+        "max": 36.7,
+        "min": 26.9,
+        "weather": "Slight snow showers",
+        "Annotation:": "Brr, it's cold."
+      }
+    },
+    {
+      "2022-12-01": {
+        "max": 31.4,
+        "min": 19.3,
+        "weather": "Moderate snowfall",
+        "Annotation:": "Brr, it's cold."
+      }
+    },
+    {
+      "2022-12-02": {
+        "max": 33.9,
+        "min": 17.7,
+        "weather": "Slight snowfall",
+        "Annotation:": "Brr, it's cold."
+      }
+    }
+  ]
+}
+```
 
 ### Missing/Todo
 Ideally, app.py would be split into two files, one with the healthchecks and one for the core application. and, the app.py source would be the same between /docker and /devel subdirectories, but I didn't want to spend too much time on it since this is only an example for the time being.
