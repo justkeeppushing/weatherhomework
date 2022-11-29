@@ -6,8 +6,10 @@ from dateutil import parser
 import datetime
 import time
 import urllib
-from flask import Flask, request, jsonify 
+from flask import Flask, request, jsonify, abort, render_template
+import logging
 
+logging.basicConfig()
 app = Flask(__name__)
 
 # WMO Weather interpretation codes (WW)
@@ -44,8 +46,10 @@ weathercodes = {
 #@app.route('/')
 #populate an index.html
 #with a form that POSTs 
-#optional to a GET to the
-#api
+
+@app.errorhandler(400)
+def bad_request(e):
+    return render_template('400.html'), 400
 
 @app.route('/api')
 def api():
@@ -57,15 +61,52 @@ def api():
   that modifies the output before returning
   the results to Flask as json dump.
   """
-  incoming_payload = request.args.to_dict()
-  num_days = int(incoming_payload['num_days']) - 1 #because python starts at 0
-  if num_days > 5:
-    return("Please keep number of days at or under 5.")
-  
-  orig_lat = incoming_payload['orig_lat']
-  orig_long = incoming_payload['orig_long']
-  start_date = parser.parse(incoming_payload['start_date']) #turn into datetime object
-  end_date = start_date + datetime.timedelta(days=num_days) #so that addition works
+  try:
+    request.args.get("num_days")
+    request.args.get("orig_lat")
+    request.args.get("orig_long")
+    request.args.get("start_date")
+  except:
+    app.logger.exception('Param')
+    abort(400)
+  else:
+    incoming_payload = request.args.to_dict()
+
+
+  try:
+    num_days = int(incoming_payload['num_days'])
+  except:
+    # Num_days missing, please specify 1 through 5.
+    abort(400)
+  else:
+    if not num_days in range(1,6):
+      app.logger.exception('num_days must be between 1 and 5.')
+      abort(400)
+  num_days += -1
+
+ 
+  try:
+    orig_lat = float(incoming_payload['orig_lat']) 
+    orig_long = float(incoming_payload['orig_long'])
+  except:
+    abort(400)
+  else:
+    if not orig_lat in range(-90,90):
+      app.logger.exception('Latitude must be within normal ranges of -90 to 90.')
+      abort(400)
+    elif not orig_long in range(-180,180):
+      app.logger.exception('Longitude must be within normal ranges of -180 to 180.')
+      abort(400)
+
+  try:
+    start_date = parser.parse(incoming_payload['start_date']) #turn into datetime object
+  except:
+    abort(400)
+  else:
+    if type(start_date) is datetime.datetime:
+      end_date = start_date + datetime.timedelta(days=num_days) #so that addition works
+    else:
+      abort(400)
 
 
   meteo_api_params = urllib.parse.urlencode({
@@ -84,8 +125,8 @@ def api():
 
   print(url)
 
+  # Could do a try/except here with testing the API first.
   with urllib.request.urlopen(url) as api_response:
-    #print(api_response.read().decode('utf-8'))
     json_response = json.loads(api_response.read().decode('utf-8'))
     return(reformat_response(json_response))
  
