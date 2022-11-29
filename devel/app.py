@@ -9,7 +9,7 @@ import urllib
 from flask import Flask, request, jsonify, abort
 import logging
 
-#logging.basicConfig(##)
+logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.DEBUG)
 app = Flask(__name__)
 
 # WMO Weather interpretation codes (WW)
@@ -64,7 +64,7 @@ def api():
     request.args.get("orig_long")
     request.args.get("start_date")
   except:
-    app.logger.exception('Param')
+    app.logger.exception('Required paramater missing. Please see README.')
     abort(400)
   else:
     incoming_payload = request.args.to_dict()
@@ -73,7 +73,7 @@ def api():
   try:
     num_days = int(incoming_payload['num_days'])
   except:
-    # Num_days missing, please specify 1 through 5.
+    app.logger.exception('num_days must be an integer between 1 and 5.')
     abort(400)
   else:
     if not num_days in range(1,6):
@@ -98,11 +98,13 @@ def api():
   try:
     start_date = parser.parse(incoming_payload['start_date']) #turn into datetime object
   except:
+    app.logger.exception('start_date must be provided in MM-DD-YYYY format.')
     abort(400)
   else:
     if type(start_date) is datetime.datetime:
       end_date = start_date + datetime.timedelta(days=num_days) #so that addition works
-    else:
+    else: # superfluous ?
+      app.logger.exception('start_date must be provided in MM-DD-YYYY format.')
       abort(400)
 
 
@@ -120,9 +122,7 @@ def api():
 
   url = 'https://api.open-meteo.com/v1/forecast?%s' % meteo_api_params
 
-  print(url)
-
-  # Could do a try/except here with testing the API first.
+  # Could do a try/except here with testing the meteo API first.
   with urllib.request.urlopen(url) as api_response:
     json_response = json.loads(api_response.read().decode('utf-8'))
     return(reformat_response(json_response))
@@ -191,7 +191,6 @@ def reformat_response(origin_response):
 
 
   final_response = json.dumps(formatted_response)
-  print(final_response)
   return final_response
 
 if __name__ == "__main__":
