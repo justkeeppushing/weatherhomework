@@ -96,11 +96,16 @@ def api():
 
   url = 'https://api.open-meteo.com/v1/forecast?%s' % meteo_api_params
 
-  # Could do a try/except here with testing the meteo API first.
-  with urllib.request.urlopen(url) as api_response:
-    json_response = json.loads(api_response.read().decode('utf-8'))
-    return(reformat_response(json_response))
- 
+
+  try:
+    with urllib.request.urlopen(url, timeout=10) as api_response:
+      json_response = json.loads(api_response.read().decode('utf-8'))
+      return(reformat_response(json_response))
+  except urllib.request.HTTPError as e:
+    app.logger.exception(e.code)
+  except urllib.request.URLError as e:
+    app.logger.exception(e.args)
+   
 
 def reformat_response(origin_response):
   """
