@@ -102,9 +102,9 @@ def api():
       json_response = json.loads(api_response.read().decode('utf-8'))
       return(reformat_response(json_response))
   except urllib.request.HTTPError as e:
-    app.logger.exception(e.code)
+    app.logger.exception(e.code, e.reason)
   except urllib.request.URLError as e:
-    app.logger.exception(e.args)
+    app.logger.exception(e.reason)
    
 
 def reformat_response(origin_response):
@@ -169,6 +169,7 @@ def reformat_response(origin_response):
                   temp['Annotation:'] = "It's just a regular day."
 
 
+  
   final_response = json.dumps(formatted_response)
   return final_response
 
